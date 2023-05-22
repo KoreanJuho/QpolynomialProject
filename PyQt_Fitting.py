@@ -9,7 +9,8 @@ from scipy.optimize import curve_fit
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 
-form_window = uic.loadUiType("C:\\Fitting\\First.ui")[0]
+mypath = "C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\First.ui"
+form_window = uic.loadUiType(mypath)[0]
 
 class WindowClass(QMainWindow, form_window):
     def __init__(self):
