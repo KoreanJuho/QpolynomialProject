@@ -1,0 +1,35 @@
+!in c:cvuser\Juho_Macro\rsag.seq
+chk y
+
+lcl num ^i ^s ^r
+
+out n
+ver n
+
+^s == #1
+
+if (buf.emp b1) = 0
+  buf del b1
+end if
+
+buf put b1 i1 j1 ^s
+buf put b1 i1 j2 ^s
+
+^r == 2
+for ^i 0 (map s^s) (map s^s)/2500
+  buf put b1 i^r j1 ^i
+  buf put b1 i^r j2 sagf(^s,0,0,^i)
+  ^r == ^r + 1
+end for
+
+buf fmt b1 i2..L j1 'd.5d'
+buf fmt b1 i2..L j2 'd.20d'
+
+lib;del 'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\sag.txt';go
+
+out y
+ver y
+
+buf exp b1 'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\sag.txt'
+
+chk n

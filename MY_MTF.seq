@@ -1,0 +1,76 @@
+!in cvuser:Juho_Macro\MY_MTF.seq
+chk y
+
+lcl num ^i ^j ^index ^jndex ^f
+
+out n;ver n
+
+^f == #1
+
+if (buf.emp b0) = 0
+  buf del b0
+end if
+
+if (buf.emp b1) = 0
+  buf del b1
+end if
+
+out y;ver y;
+
+ffo -0.025;ifo 0.005;nfo 11
+buf y
+mtf;mfr ^f;ifr ^f;fre ^f;cht foc y;go
+buf n
+out n;ver n
+
+buf mov b0 i1 j1
+buf fnd b0 'Formula'
+^i == (buf.i)
+buf mov b1
+buf cop b0 i^i j3..L
+buf fnd b0 'FOCUS'
+buf mov b0
+^i == (buf.i)+1
+buf mov b1 i1 jL+1
+buf cop b0 i^i j1..L
+
+buf mov b0 i1 j1
+buf fnd b0 'L/MM'
+buf mov b1 iL+1 jL+1
+buf cop b0 ic+3 j4..L
+buf mov b0 ic+1 jc
+buf fnd b0 'L/MM'
+buf mov b1 ic jL+1
+buf cop b0 ic+3 j2..L
+
+for ^j 2 (num f)
+  buf mov b0 ic+1 jc
+  buf fnd b0 'L/MM'
+  buf mov b1 iL+1 j1
+  for ^i 1 ((buf.col b0 ic+3)-4)/2
+  ^index == 3+2*^i
+  buf put b1 ic j^i (buf.num b0 ic+3 j^index)
+  ^index == 4+2*^i
+  buf put b1 ic+1 j^i (buf.num b0 ic+3 j^index)
+  end for
+  buf mov b0 ic+1 j1
+  buf fnd b0 'L/MM'
+  buf mov b1 ic jL
+  for ^i 1 ((buf.col b0 ic+3)-1)/2
+  ^index == 2*^i
+  ^jndex == (buf.j)+^i
+  buf put b1 ic j^jndex (buf.num b0 ic+3 j^index)
+  ^index == 1+2*^i
+  buf put b1 ic+1 j^jndex (buf.num b0 ic+3 j^index)
+  end for
+end for
+
+buf fmt b1 i1..L j1..L 'dd.3d'
+
+lib;del 'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\JUHOMTF.txt';go
+
+out y;ver y
+
+buf exp b1 'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\JUHOMTF.txt'
+
+chk n

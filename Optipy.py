@@ -5,9 +5,7 @@ from scipy.interpolate import interp1d
 import numpy as np
 import win32com.client
 import tkinter as tk
-from tkinter import filedialog
-from tkinter import simpledialog
-from tkinter import messagebox
+from tkinter import filedialog, simpledialog, messagebox
 
 class ASP_fit:
     def __init__(self):
@@ -47,10 +45,10 @@ class ASP_fit:
         # root = tk.Tk()
         # root.withdraw()  # Hide the root window
         # surface_number = simpledialog.askinteger("Surface Number", "Which surface want to fit?")
-        mysur = f"in C:CVUSER\\Juho_Macro\\rsag.seq {surface_number}"
+        mysur = fr"in C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\rsag.seq {surface_number}"
         self.CV.Command(mysur)
     
-        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\sag.txt'
+        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\sag.txt'
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -97,9 +95,9 @@ class ASP_fit:
         return params.tolist()
     
     def DrawMTF(self, ax, freq):
-        self.CV.Command(f"in cvuser:Juho_Macro\MY_MTF.seq {freq}")
+        self.CV.Command(fr"in C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\MY_MTF.seq {freq}")
 
-        file_path = 'C:\CVUSER\JUHOMTF.txt'
+        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\JUHOMTF.txt'
 
         with open(file_path, 'r') as file:
             data = [[float(num) for num in line.strip().split()] for line in file]

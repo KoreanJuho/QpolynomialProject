@@ -48,10 +48,10 @@ class WindowClass(QMainWindow, form_window):
         QApplication.instance().quit()
         
     def Getrsag(self, surface_number):
-        mysur = f"in C:CVUSER\\Juho_Macro\\rsag.seq {surface_number}"
+        mysur = fr"in C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\rsag.seq {surface_number}"
         self.CV.Command(mysur)
-    
-        file_path = 'C:\\CVUSER\\sag.txt'
+
+        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\sag.txt'
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -96,15 +96,15 @@ class WindowClass(QMainWindow, form_window):
         plt.clf()
         plt.plot(sag_function(r,*params)-z, r)
         plt.title("Sag Error")
-        plt.savefig("C:\\Fitting\\Sag_Error.png", dpi=300, bbox_inches='tight')
+        plt.savefig(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\Sag_Error.png", dpi=300, bbox_inches='tight')
         
         return params.tolist()
     
     def DrawMTF(self, freq):
         plt.clf()
-        self.CV.Command(f"in cvuser:Juho_Macro\MY_MTF.seq {freq}")
+        self.CV.Command(fr"in C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\MY_MTF.seq {freq}")
 
-        file_path = 'C:\CVUSER\JUHOMTF.txt'
+        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\JUHOMTF.txt'
 
         with open(file_path, 'r') as file:
             data = [[float(num) for num in line.strip().split()] for line in file]
@@ -144,28 +144,28 @@ class WindowClass(QMainWindow, form_window):
         params = self.Fits(surface_num, r, z)
         self.DrawMTF(spatial_freq)
         plt.title(f"Before MTF s{surface_num} {spatial_freq}lp/mm")
-        plt.savefig("C:\\Fitting\\BeforeMTF.png", dpi=1000, bbox_inches='tight')
+        plt.savefig(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\BeforeMTF.png", dpi=1000, bbox_inches='tight')
         self.EnterASP(surface_num, params)
         self.DrawMTF(spatial_freq)
         plt.title(f"After MTF s{surface_num} {spatial_freq}lp/mm")
-        plt.savefig("C:\\Fitting\\AfterMTF.png", dpi=1000, bbox_inches='tight')
+        plt.savefig(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\AfterMTF.png", dpi=1000, bbox_inches='tight')
         self.finish.setText(f"finish s{surface_num}")
         
     def Sag_Errors(self):
         QPixmapVar = QPixmap()
-        QPixmapVar.load("C:\\Fitting\\Sag_Error.png")
+        QPixmapVar.load(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\Sag_Error.png")
         scaled_pixmap = QPixmapVar.scaled(self.Graphic.width(), self.Graphic.height(), Qt.KeepAspectRatio)
         self.Graphic.setPixmap(scaled_pixmap)
         
     def Before_MTFs(self):
         QPixmapVar = QPixmap()
-        QPixmapVar.load("C:\\Fitting\\BeforeMTF.png")
+        QPixmapVar.load(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\BeforeMTF.png")
         scaled_pixmap = QPixmapVar.scaled(self.Graphic.width(), self.Graphic.height(), Qt.KeepAspectRatio)
         self.Graphic.setPixmap(scaled_pixmap)
         
     def After_MTFs(self):
         QPixmapVar = QPixmap()
-        QPixmapVar.load("C:\\Fitting\\AfterMTF.png")
+        QPixmapVar.load(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\AfterMTF.png")
         scaled_pixmap = QPixmapVar.scaled(self.Graphic.width(), self.Graphic.height(), Qt.KeepAspectRatio)
         self.Graphic.setPixmap(scaled_pixmap)
     
