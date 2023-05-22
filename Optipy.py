@@ -164,5 +164,3 @@ mypth = f"WRL {mypth}"
 ft.CV.Command(mypth)
 print("save")
 ft.StopCodeV()
-
-print("git test")
