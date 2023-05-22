@@ -50,7 +50,7 @@ class ASP_fit:
         mysur = f"in C:CVUSER\\Juho_Macro\\rsag.seq {surface_number}"
         self.CV.Command(mysur)
     
-        file_path = 'C:\\CVUSER\\sag.txt'
+        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\sag.txt'
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -133,7 +133,7 @@ class ASP_fit:
         self.CV.Command(mystr)
     
     def Savefig(self):
-        ft.fig.savefig("C:\CVUSER\\MTF.png")
+        ft.fig.savefig(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\MTF.png")
     
     def StopCodeV(self):
         self.CV.StopCodeV()
@@ -159,7 +159,7 @@ for surface_num in range(1,9):
 ft.DrawMTF(ft.After_Mtf_graph,150)
 ft.Savefig()
 
-mypth = "C:\CVUSER\\test_fit1.seq"
+mypth = "C:\CVUSER\\test_fit.seq"
 mypth = f"WRL {mypth}"
 ft.CV.Command(mypth)
 print("save")
