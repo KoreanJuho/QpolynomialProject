@@ -5,7 +5,8 @@ from scipy.interpolate import interp1d
 import numpy as np
 import win32com.client
 import tkinter as tk
-from tkinter import filedialog, simpledialog, messagebox
+from tkinter import filedialog, messagebox
+import os
 
 class ASP_fit:
     def __init__(self):
@@ -41,14 +42,18 @@ class ASP_fit:
         mypth = f"run {file_path};GO"
         self.CV.Command(mypth)
 
-    def Getrsag(self,surface_number):
-        # root = tk.Tk()
-        # root.withdraw()  # Hide the root window
-        # surface_number = simpledialog.askinteger("Surface Number", "Which surface want to fit?")
-        mysur = fr"in C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\rsag.seq {surface_number}"
+    def Getrsag(self, surface_number):
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+        parent_dir = os.path.dirname(script_dir)
+        relative_path = os.path.join(parent_dir, "CodeV_Macro", "rsag.seq")
+        absolute_path = os.path.abspath(relative_path)
+        
+        mysur = fr"in {absolute_path} {surface_number}"
+        
         self.CV.Command(mysur)
-    
-        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\sag.txt'
+        
+        relative_path = os.path.join(parent_dir, "txtData", "sag.txt")
+        file_path = os.path.abspath(relative_path)
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -78,6 +83,7 @@ class ASP_fit:
         lower_bounds = [-80, -80]
         upper_bounds = [10, 10]
 
+        #This code is for mild surface
         for weight, term in enumerate(terms):
             if term == 2:
                 sag_function = create_sag_function([])
@@ -90,14 +96,20 @@ class ASP_fit:
                 slice_index = 1600 + weight*100
                 params, _ = curve_fit(sag_function, r[0:slice_index], z[0:slice_index], bounds=(lower_bounds, upper_bounds), p0=params, maxfev=10000)
 
-        self.sag_error_graph.plot(sag_function(r,*params)-z, r)
+        #self.sag_error_graph.plot(sag_function(r,*params)-z, r)
         
         return params.tolist()
     
     def DrawMTF(self, ax, freq):
-        self.CV.Command(fr"in C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\MY_MTF.seq {freq}")
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+        parent_dir = os.path.dirname(script_dir)
+        relative_path = os.path.join(parent_dir, "CodeV_Macro", "MY_MTF.seq")
+        absolute_path = os.path.abspath(relative_path)
+        
+        self.CV.Command(fr"in {absolute_path} {freq}")
 
-        file_path = r'C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\JUHOMTF.txt'
+        relative_path = os.path.join(parent_dir, "txtData", "JUHOMTF.txt")
+        file_path = os.path.abspath(relative_path)
 
         with open(file_path, 'r') as file:
             data = [[float(num) for num in line.strip().split()] for line in file]
@@ -131,31 +143,29 @@ class ASP_fit:
         self.CV.Command(mystr)
     
     def Savefig(self):
-        ft.fig.savefig(r"C:\Users\Lab\OneDrive - 금오공과대학교\PythonProject\QbfsProject\Graph\MTF.png")
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+        parent_dir = os.path.dirname(script_dir)
+        relative_path = os.path.join(parent_dir, "Graph", "MTF.png")
+        absolute_path = os.path.abspath(relative_path)
+        ft.fig.savefig(absolute_path)
     
     def StopCodeV(self):
         self.CV.StopCodeV()
         print("Turned Off")
-    
+
 ft = ASP_fit()
 ft.OpenSeq()
 
-ft.DrawMTF(ft.Before_Mtf_graph,150)
+#ft.DrawMTF(ft.Before_Mtf_graph,150)
 
-for surface_num in range(1,9):
+for surface_num in range(9,10):
     r , z = ft.Getrsag(surface_num)
     params = ft.Fitting(surface_num, r, z)
     ft.EnterASP(surface_num, params)
     print(f"success {surface_num}")
 
-# surface_num = 2
-# r , z = ft.Getrsag(surface_num)
-# params = ft.Fitting(surface_num, r, z)
-# ft.EnterASP(surface_num, params)
-# print(f"success {surface_num}")
-
-ft.DrawMTF(ft.After_Mtf_graph,150)
-ft.Savefig()
+#ft.DrawMTF(ft.After_Mtf_graph,150)
+#ft.Savefig()
 
 mypth = "C:\CVUSER\\test_fit.seq"
 mypth = f"WRL {mypth}"
