@@ -158,17 +158,18 @@ ft.OpenSeq()
 
 #ft.DrawMTF(ft.Before_Mtf_graph,150)
 
-for surface_num in range(9,10):
-    r , z = ft.Getrsag(surface_num)
-    params = ft.Fitting(surface_num, r, z)
-    ft.EnterASP(surface_num, params)
-    print(f"success {surface_num}")
+surface_num = 2
+r , z = ft.Getrsag(surface_num)
+params = ft.Fitting(surface_num, r, z)
+print(params)
+# ft.EnterASP(surface_num, params)
+# print(f"success {surface_num}")
 
 #ft.DrawMTF(ft.After_Mtf_graph,150)
 #ft.Savefig()
 
-mypth = "C:\CVUSER\\test_fit.seq"
-mypth = f"WRL {mypth}"
-ft.CV.Command(mypth)
-print("save")
-ft.StopCodeV()
+# mypth = "C:\CVUSER\\test_fit.seq"
+# mypth = f"WRL {mypth}"
+# ft.CV.Command(mypth)
+# print("save")
+# ft.StopCodeV()
